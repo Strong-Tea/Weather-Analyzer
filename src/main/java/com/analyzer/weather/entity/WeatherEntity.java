@@ -7,6 +7,7 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 
 import java.time.LocalDateTime;
+import java.util.Objects;
 
 @Entity
 public class WeatherEntity {
@@ -19,6 +20,19 @@ public class WeatherEntity {
     private float humidity;
     private String location;
     private LocalDateTime dateTime;
+
+    public WeatherEntity() {
+    }
+
+    public WeatherEntity(Long id, float temperature, float wind, float pressure, float humidity, String location, LocalDateTime dateTime) {
+        this.id = id;
+        this.temperature = temperature;
+        this.wind = wind;
+        this.pressure = pressure;
+        this.humidity = humidity;
+        this.location = location;
+        this.dateTime = dateTime;
+    }
 
     public void setId(Long id) {
         this.id = id;
@@ -61,5 +75,26 @@ public class WeatherEntity {
     }
     public LocalDateTime getDateTime() {
         return dateTime;
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj) return true;
+        if (obj == null || getClass() != obj.getClass()) return false;
+
+        WeatherEntity other = (WeatherEntity) obj;
+
+        return Float.compare(other.temperature, temperature) == 0 &&
+                Float.compare(other.wind, wind) == 0 &&
+                Float.compare(other.pressure, pressure) == 0 &&
+                Float.compare(other.humidity, humidity) == 0 &&
+                Objects.equals(id, other.id) &&
+                Objects.equals(location, other.location) &&
+                Objects.equals(dateTime, other.dateTime);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id, temperature, wind, pressure, humidity, location, dateTime);
     }
 }
